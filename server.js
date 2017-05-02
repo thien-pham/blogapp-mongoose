@@ -6,25 +6,26 @@ const morgan = require('morgan');
 mongoose.Promise = global.Promise;
 
 const {PORT, DATABASE_URL} = require('./config');
-const {Posts} = require('./models');
+const {Post} = require('./models');
 
 const app = express();
 app.use(bodyParser.json());
 
 app.get('/posts', (req, res) => {
-    Post
-        .find()
-        .exec()
-        .then(posts => {
-            res.json({
-                posts: posts.map((post) => post.apiRepr())
-            });
-        })
-        .catch(
-            err => {
-                console.error(err);
-                res.status(500).json({message: 'Error!'});
-            });
+    res.json(req.body);
+    // Post
+    //     .find()
+    //     .exec()
+    //     .then(posts => {
+    //         res.json({
+    //             posts: posts.map((post) => post.apiRepr())
+    //         });
+    //     })
+    //     .catch(
+    //         err => {
+    //             console.error(err);
+    //             res.status(500).json({message: 'Error!'});
+    //         });
 });
 
 
