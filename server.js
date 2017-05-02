@@ -12,11 +12,11 @@ const app = express();
 app.use(bodyParser.json());
 
 app.get('/posts', (req, res) => {
-    res.json(req.body);
+    //res.json(req.body);
     Post
-        .find()
-        .exec()
-        .then(posts => {
+      .find()
+      .exec()
+      .then(post => {
             res.json({
                 posts: posts.map((post) => post.apiRepr())
             });
@@ -24,9 +24,40 @@ app.get('/posts', (req, res) => {
         .catch(
             err => {
                 console.error(err);
-                res.status(500).json({message: 'Error!'});
+                res.status(500).send('Error!');
             });
 });
+
+app.get('/posts/:id', (req, res) => {
+  Post
+    .findById(req.params.id)
+    .exec()
+    .then(post => res.json(post.apiRepr()))
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Error: id required');
+    });
+});
+
+app.post('/posts', (req, res) => {
+  const requiredFields = ['title', 'content', 'author'];
+  for(let i=0, i<requiredFields.length; i++) {
+    const field = requiredFields[i];
+    if(!(field in req.body)) {
+      res.status(400).send('Missing required fields');
+    }
+    Post
+      .create({
+        title: req.body.title,
+        content: req.body.content,
+        author: req.body.author})
+      .then(post => res.status(201).json(post.apiRepr()))
+      .catch(err => {
+        console.error(err);
+        res.status(500).send("Error!");
+      });
+};
+
 
 
 
@@ -74,6 +105,6 @@ function closeServer() {
 // runs. but we also export the runServer command so other code (for instance, test code) can start the server as needed.
 if (require.main === module) {
   runServer().catch(err => console.error(err));
-};
+}
 
 module.exports = {app, runServer, closeServer};
