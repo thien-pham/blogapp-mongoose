@@ -13,19 +13,19 @@ app.use(bodyParser.json());
 
 app.get('/posts', (req, res) => {
     res.json(req.body);
-    // Post
-    //     .find()
-    //     .exec()
-    //     .then(posts => {
-    //         res.json({
-    //             posts: posts.map((post) => post.apiRepr())
-    //         });
-    //     })
-    //     .catch(
-    //         err => {
-    //             console.error(err);
-    //             res.status(500).json({message: 'Error!'});
-    //         });
+    Post
+        .find()
+        .exec()
+        .then(posts => {
+            res.json({
+                posts: posts.map((post) => post.apiRepr())
+            });
+        })
+        .catch(
+            err => {
+                console.error(err);
+                res.status(500).json({message: 'Error!'});
+            });
 });
 
 
