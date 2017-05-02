@@ -3,10 +3,7 @@ const mongoose = require('mongoose');
 const postSchema = mongoose.Schema({
     title: {type: String, required: true},
     content: {type: String, required: true},
-    author: {
-        firstName: String, required: true,
-        lastName: String, required: true 
-    }
+    author: {type: String, required: true}
 });
 
 postSchema.virtual('authorName').get(function() {
@@ -17,7 +14,7 @@ postSchema.methods.apiRepr = function() {
         id: this._id,
         title: this.title,
         content: this.content,
-        author: this.authorName
+        author: this.author
     };
 };
 

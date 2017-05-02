@@ -16,10 +16,10 @@ app.get('/posts', (req, res) => {
     Post
       .find()
       .exec()
-      .then(post => {
-            res.json({
-                posts: posts.map((post) => post.apiRepr())
-            });
+      .then(posts => {
+            res.json(
+                posts.map((post) => post.apiRepr())
+          );
         })
         .catch(
             err => {
@@ -41,11 +41,12 @@ app.get('/posts/:id', (req, res) => {
 
 app.post('/posts', (req, res) => {
   const requiredFields = ['title', 'content', 'author'];
-  for(let i=0, i<requiredFields.length; i++) {
+  for(let i=0; i<requiredFields.length; i++) {
     const field = requiredFields[i];
     if(!(field in req.body)) {
       res.status(400).send('Missing required fields');
     }
+  }
     Post
       .create({
         title: req.body.title,
@@ -56,7 +57,7 @@ app.post('/posts', (req, res) => {
         console.error(err);
         res.status(500).send("Error!");
       });
-};
+});
 
 
 
