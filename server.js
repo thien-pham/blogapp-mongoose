@@ -55,11 +55,29 @@ app.post('/posts', (req, res) => {
       .then(post => res.status(201).json(post.apiRepr()))
       .catch(err => {
         console.error(err);
-        res.status(500).send("Error!");
+        res.status(400).send('Error!');
       });
 });
 
-
+//PUT REQUEST
+app.put('/posts/:id', (req, res) => {
+  const postId = req.params.id;
+  if(!(postId)) {
+    res.status(400).send('Error: missing id');
+  }
+  Post
+    .findByIdAndUpdate(req.params.id, {
+      $set: {
+        'title': req.body.title,
+        'content': req.body.content,
+        'author': req.body.author
+      }
+    })
+    .then(post => res.status(201).json(post.apiRepr()))     
+    .catch(err => {
+      console.error('Error: Could not update', err);
+    });
+});
 
 
 
