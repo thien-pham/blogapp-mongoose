@@ -12,7 +12,6 @@ const app = express();
 app.use(bodyParser.json());
 
 app.get('/posts', (req, res) => {
-    //res.json(req.body);
     Post
       .find()
       .exec()
@@ -59,7 +58,6 @@ app.post('/posts', (req, res) => {
       });
 });
 
-//PUT REQUEST
 app.put('/posts/:id', (req, res) => {
   const postId = req.params.id;
   if(!(postId)) {
@@ -79,15 +77,11 @@ app.put('/posts/:id', (req, res) => {
     });
 });
 
-//DELETE
 app.delete('/posts/:id', (req, res) => {
   Post
     .findByIdAndRemove(req.params.id)
     .then(post => res.status(204).end());
 });
-
-
-
 
 let server;
 
