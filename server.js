@@ -66,7 +66,7 @@ app.put('/posts/:id', (req, res) => {
     res.status(400).send('Error: missing id');
   }
   Post
-    .findByIdAndUpdate(req.params.id, {
+    .findByIdAndUpdate(postId, {
       $set: {
         'title': req.body.title,
         'content': req.body.content,
@@ -79,6 +79,12 @@ app.put('/posts/:id', (req, res) => {
     });
 });
 
+//DELETE
+app.delete('/posts/:id', (req, res) => {
+  Post
+    .findByIdAndRemove(req.params.id)
+    .then(post => res.status(204).end());
+});
 
 
 
